@@ -2,9 +2,85 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
+    android:id="@+id/pantallaIngreso"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".pantallaIngreso">
+
+    <FrameLayout
+        android:id="@+id/encabezado"
+        android:layout_width="410dp"
+        android:layout_height="75dp"
+        android:background="#DCF6F6"
+        tools:ignore="MissingConstraints">
+
+        <ImageView
+            android:id="@+id/fitMoveImage"
+            android:layout_width="135dp"
+            android:layout_height="55dp"
+            android:layout_gravity="center"
+            android:src="@drawable/fitmoveimage" />
+
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/txtIngresoCredenciales"
+        android:layout_width="match_parent"
+
+        android:layout_height="55dp"
+        android:gravity="center"
+        android:text="INGRESA TUS CREDENCIALES"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="-16dp"
+        tools:layout_editor_absoluteY="114dp" />
+
+    <LinearLayout
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="@drawable/fondo_recuadro"
+        android:elevation="4dp"
+        android:orientation="vertical"
+        android:padding="16dp"
+        tools:layout_editor_absoluteX="55dp"
+        tools:layout_editor_absoluteY="229dp"
+        tools:ignore="MissingConstraints">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Nombre de usuario"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/etUsername"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Ingrese su nombre de usuario"
+            android:inputType="textPersonName"
+            android:minHeight="48dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Contraseña"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/etPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Ingrese su contraseña"
+            android:inputType="textPassword"
+            android:minHeight="48dp"
+            android:textColorHint="#8D6E63" />
+
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
