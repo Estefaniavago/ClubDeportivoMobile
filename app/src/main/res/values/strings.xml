@@ -11,4 +11,18 @@
     <string name="user">user</string>
     <string name="bienvenido">Bienvenido</string>
     <string name="user2">User</string>
+    <string name="ingreso_administrador">INGRESO ADMINISTRADOR</string>
+    <string name="salir">SALIR</string>
+    <string name="ingrese_su_contrase_a">Ingrese su contraseña</string>
+    <string name="ingrese_nombre_de_usuario">Ingrese nombre de usuario</string>
+    <string name="ingresa_tus_credenciales">INGRESA TUS CREDENCIALES</string>
+    <string name="guardar">Guardar</string>
+    <string name="dni">DNI</string>
+    <string name="nombre_completo">Nombre completo</string>
+    <string name="limpiar">LIMPIAR</string>
+    <string name="n_mero_de_documento">Número de Documento</string>
+    <string name="registrar">REGISTRAR</string>
+    <string name="apellido">Apellido</string>
+    <string name="registro_de_cliente">REGISTRO DE CLIENTE</string>
+    <string name="nombre">Nombre</string>
 </resources>

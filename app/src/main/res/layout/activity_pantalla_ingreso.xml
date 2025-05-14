@@ -5,12 +5,13 @@
     android:id="@+id/pantallaIngreso"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#3F51B5"
     tools:context=".PantallaIngreso">
 
-    <FrameLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/encabezado"
-        android:layout_width="478dp"
-        android:layout_height="116dp"
+        android:layout_width="412dp"
+        android:layout_height="111dp"
         android:layout_marginStart="16dp"
         android:layout_marginBottom="39dp"
         android:background="#DCF6F6"
@@ -19,18 +20,23 @@
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="MissingConstraints">
+        tools:ignore="MissingConstraints,VisualLintBounds">
 
         <ImageView
             android:id="@+id/fitMoveImage"
-            android:layout_width="135dp"
-            android:layout_height="55dp"
-            android:layout_gravity="center"
+            android:layout_width="191dp"
+            android:layout_height="36dp"
             android:contentDescription="ingresoCredenciales"
             android:src="@drawable/fitmoveimage"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.502"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.213"
             tools:ignore="HardcodedText" />
 
-    </FrameLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <TextView
         android:id="@+id/txtIngresoCredenciales"
@@ -39,7 +45,8 @@
         android:layout_marginTop="16dp"
         android:layout_marginBottom="60dp"
         android:gravity="center"
-        android:text="INGRESA TUS CREDENCIALES"
+        android:text="@string/ingresa_tus_credenciales"
+        android:textColor="#F2EFEF"
         android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout"
@@ -78,9 +85,10 @@
             android:id="@+id/etUsername"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Ingrese nombre de usuario"
+            android:hint="@string/ingrese_nombre_de_usuario"
             android:inputType="textPersonName"
             android:minHeight="48dp"
+            android:textColorHint="#616161"
             tools:ignore="Autofill" />
 
         <TextView
@@ -96,57 +104,46 @@
             android:id="@+id/etPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Ingrese su contraseña"
+            android:hint="@string/ingrese_su_contrase_a"
+            android:importantForAutofill="no"
             android:inputType="textPassword"
             android:minHeight="48dp"
-            android:textColorHint="#A4A09F" />
+            android:textColorHint="#546E7A" />
 
     </LinearLayout>
 
     <Button
         android:id="@+id/button"
-        android:layout_width="118dp"
-        android:layout_height="73dp"
+        android:layout_width="142dp"
+        android:layout_height="69dp"
         android:layout_marginStart="43dp"
         android:layout_marginTop="50dp"
         android:layout_marginEnd="199dp"
         android:layout_marginBottom="102dp"
-        android:backgroundTint="#2196F3"
+        android:backgroundTint="#EAF8F8F8"
         android:text="INGRESO USUARIO"
+        android:textColor="#2C2B2B"
+        app:cornerRadius="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.235"
+        app:layout_constraintHorizontal_bias="0.185"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout"
-        app:layout_constraintVertical_bias="0.4"
+        app:layout_constraintVertical_bias="0.0"
         tools:ignore="DuplicateClickableBoundsCheck,DuplicateSpeakableTextCheck,HardcodedText" />
 
     <Button
-        android:id="@+id/btnIngresoUsuario"
-        android:layout_width="118dp"
-        android:layout_height="73dp"
-        android:layout_marginStart="43dp"
-        android:layout_marginTop="50dp"
-        android:layout_marginEnd="199dp"
-        android:layout_marginBottom="102dp"
-        android:backgroundTint="#2196F3"
-        android:text="INGRESO USUARIO"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.235"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout"
-        app:layout_constraintVertical_bias="0.4" />
-
-    <Button
         android:id="@+id/btnIngresoAdm"
-        android:layout_width="181dp"
-        android:layout_height="93dp"
+        android:layout_width="165dp"
+        android:layout_height="58dp"
         android:layout_marginStart="41dp"
         android:layout_marginTop="55dp"
         android:layout_marginBottom="98dp"
-        android:backgroundTint="#2196F3"
-        android:text="INGRESO ADMINISTRADOR"
+        android:background="@color/white"
+        android:text="@string/ingreso_administrador"
+        android:textColor="#757575"
+        android:textColorLink="#00FFFFFF"
+        app:cornerRadius="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -162,8 +159,10 @@
         android:layout_marginTop="5dp"
         android:layout_marginEnd="155dp"
         android:layout_marginBottom="23dp"
-        android:text="SALIR"
-        android:backgroundTint="#2196F3"
+        android:backgroundTint="#E6EAEF"
+        android:text="@string/salir"
+        android:textColor="#212121"
+        app:cornerRadius="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

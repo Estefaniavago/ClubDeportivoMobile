@@ -2,8 +2,11 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/menubotones"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#015F8FFF"
+    tools:context=".MenuActivity">
 
     <Button
         android:id="@+id/button2"
@@ -151,9 +154,9 @@
             android:layout_width="178dp"
             android:layout_height="29dp"
             app:srcCompat="@drawable/fitmoveimage"
+            tools:ignore="ContentDescription"
             tools:layout_editor_absoluteX="116dp"
-            tools:layout_editor_absoluteY="11dp"
-            tools:ignore="ContentDescription" />
+            tools:layout_editor_absoluteY="11dp" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <TextView

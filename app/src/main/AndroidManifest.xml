@@ -13,6 +13,14 @@
         android:theme="@style/Theme.ClubDeportivo"
         tools:targetApi="31">
         <activity
+            android:name=".RegistroUsuario"
+            android:exported="true"
+            android:label="@string/registro_de_cliente" />
+        <activity
+            android:name=".MenuActivity"
+            android:exported="true"
+             />
+        <activity
             android:name=".PantallaIngreso"
             android:exported="false" />
         <activity
@@ -25,14 +33,6 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".MainActivity"
-            android:exported="true"
-            tools:ignore="DuplicateActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
     </application>
 
 </manifest>
