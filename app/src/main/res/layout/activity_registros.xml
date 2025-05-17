@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#58A2ED">
+
+    <include layout="@layout/encabezado" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="LISTADO DE VENCIMIENTOS"
+                android:textSize="24sp"
+                android:textAlignment="center"
+                android:layout_marginTop="16dp"
+                android:textStyle="bold"/>
+
+            <!-- Fecha y botón borrar -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="16dp">
+
+                <EditText
+                    android:id="@+id/etFecha"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="02/05/2025"
+                    android:enabled="false"
+                    android:background="@drawable/fondo_recuadro"
+                    android:padding="8dp"/>
+
+                <Button
+                    android:id="@+id/btnBorrar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="BORRAR"
+                    android:backgroundTint="#58A2ED"
+                    android:layout_marginStart="16dp"/>
+            </LinearLayout>
+
+            <!-- Tabla de registros -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp"
+                android:background="@drawable/fondo_recuadro"
+                android:layout_margin="16dp">
+
+                <!-- Encabezados -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingBottom="8dp">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="ID Pago"/>
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:text="DNI"/>
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:text="Fecha de Vencimiento"/>
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:text="Estado de Vencimiento"/>
+                </LinearLayout>
+
+                <ListView
+                    android:id="@+id/listViewRegistros"
+                    android:layout_width="match_parent"
+                    android:layout_height="400dp"/>
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/btnCargarMas"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="CARGAR MÁS"
+                android:backgroundTint="#58A2ED"
+                android:layout_margin="16dp"/>
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout> 

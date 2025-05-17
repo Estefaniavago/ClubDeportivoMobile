@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@android:color/white"
+    tools:context=".ListarVencimientoActivity">
+
+    <!-- Incluir el encabezado -->
+    <include layout="@layout/encabezado" />
+
+    <!-- Content -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="LISTADO DE VENCIMIENTOS"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:layout_marginBottom="24dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Fecha"
+                android:layout_marginEnd="8dp"/>
+
+            <EditText
+                android:id="@+id/etFecha"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:enabled="false"
+                android:minHeight="48dp"
+                android:text="02/05/2025" />
+
+            <Button
+                android:id="@+id/btnBorrar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="BORRAR"
+                android:backgroundTint="#015f8f"/>
+        </LinearLayout>
+
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:stretchColumns="*">
+
+            <TableRow
+                android:background="#E0E0E0"
+                android:padding="8dp">
+
+                <TextView
+                    android:text="ID Pago"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:text="DNI"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:text="Fecha de\nVencimiento"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:text="Estado de\nVencimiento"
+                    android:textStyle="bold"/>
+            </TableRow>
+
+        </TableLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerVencimientos"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
+
+        <Button
+            android:id="@+id/btnCargarMas"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="CARGAR MÁS"
+            android:backgroundTint="#015f8f"
+            android:layout_marginTop="16dp"/>
+
+    </LinearLayout>
+
+</LinearLayout> 
