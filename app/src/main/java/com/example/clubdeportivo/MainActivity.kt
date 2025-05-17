@@ -13,15 +13,23 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_main)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.pantallaInicial)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
+        
         val btnLogin = findViewById<Button>(R.id.btnLogin)
+        val btnSalir = findViewById<Button>(R.id.btnSalir)
 
         btnLogin.setOnClickListener {
             val intent = Intent(this, PantallaIngreso::class.java)
             startActivity(intent)
         }
-}}
+
+        btnSalir.setOnClickListener {
+            finish()
+        }
+
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.pantallaInicial)) { v, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+            insets
+        }
+    }
+}

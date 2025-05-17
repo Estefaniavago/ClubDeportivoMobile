@@ -12,59 +12,46 @@
         android:id="@+id/textoBienvenidos"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="141dp"
         android:layout_marginTop="95dp"
-        android:layout_marginEnd="141dp"
-        android:layout_marginBottom="37dp"
         android:text="BIENVENIDOS"
         android:textSize="20sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/imageView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="MissingConstraints" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="319dp"
         android:layout_height="331dp"
-        android:layout_marginStart="46dp"
         android:layout_marginTop="36dp"
-        android:layout_marginEnd="46dp"
-        android:layout_marginBottom="81dp"
-        app:layout_constraintBottom_toTopOf="@+id/btnLogin"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textoBienvenidos"
-        app:srcCompat="@drawable/logoclubdeportivo"
-        tools:ignore="MissingConstraints" />
+        app:srcCompat="@drawable/logoclubdeportivo" />
 
     <Button
         android:id="@+id/btnLogin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="60dp"
+        android:layout_marginBottom="48dp"
         android:backgroundTint="#ffffff"
         android:text="LOGIN"
         android:textColor="#040404"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="61dp"
-        tools:layout_editor_absoluteY="579dp" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/btnSalir"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="235dp"
-        android:layout_marginEnd="88dp"
+        android:layout_marginEnd="60dp"
         android:layout_marginBottom="48dp"
         android:backgroundTint="#ffffff"
         android:text="SALIR"
         android:textColor="#040404"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView"
-        tools:ignore="MissingConstraints" />
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

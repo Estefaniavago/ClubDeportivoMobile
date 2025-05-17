@@ -1,16 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">ClubDeportivo</string>
+    <string name="app_name">Club Deportivo</string>
     <string name="registrar_cliente">Registrar Cliente</string>
     <string name="cobro_cuota_mensual">Cobro Cuota Mensual</string>
     <string name="cobro_actividad">Cobro Actividad</string>
     <string name="listar_vencimiento">Listar Vencimiento</string>
     <string name="emitir_carnet">Emitir Carnet</string>
-    <string name="volver">Volver</string>
+    <string name="volver">VOLVER</string>
     <string name="registros">Registros</string>
     <string name="men">Menú</string>
     <string name="user">user</string>
     <string name="bienvenido">Bienvenido</string>
-    <string name="user2">User</string>
+    <string name="user2">User2</string>
     <string name="ingreso_administrador">INGRESO ADMINISTRADOR</string>
     <string name="salir">SALIR</string>
     <string name="ingrese_su_contrase_a">Ingrese su contraseña</string>
@@ -23,6 +24,21 @@
     <string name="n_mero_de_documento">Número de Documento</string>
     <string name="registrar">REGISTRAR</string>
     <string name="apellido">Apellido</string>
-    <string name="registro_de_cliente">REGISTRO DE CLIENTE</string>
+    <string name="registro_de_cliente">Registro de Cliente</string>
     <string name="nombre">Nombre</string>
+    <string name="bienvenida_usuario">Bienvenido User2</string>
+    <string name="actividad_diaria">ACTIVIDAD DIARIA</string>
+    <string name="validar">VALIDAR</string>
+    <string name="nombre_y_apellido">Nombre y Apellido</string>
+    <string name="actividad">Actividad</string>
+    <string name="precio">Precio</string>
+    <string name="dia_horario">Día                                Horario</string>
+    <string name="medio_de_pago">MEDIO DE PAGO</string>
+    <string name="efectivo">Efectivo</string>
+    <string name="credito">Crédito</string>
+    <string name="pagar">PAGAR</string>
+    <string name="seleccionar_actividad">Seleccionar actividad</string>
+    <string name="seleccionar_tarjeta">Seleccionar tarjeta de crédito</string>
+    <string name="ingresa_dni">Ingresa número de DNI</string>
+    <string name="ingrese_documento">Ingrese número de documento</string>
 </resources>

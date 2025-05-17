@@ -7,7 +7,7 @@
     android:orientation="vertical"
     tools:context=".RegistroUsuario">
 
-    <include layout="@layout/encabezado"/>
+    <include layout="@layout/encabezado" />
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
@@ -48,10 +48,12 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
                 android:importantForAutofill="no"
-                android:inputType="TODO"
+                android:inputType="textPersonName"
+                android:minHeight="48dp"
                 android:text="@string/apellido"
-                android:layout_marginBottom="4dp"/>
+                tools:ignore="TextViewEdits" />
 
             <EditText
                 android:id="@+id/etApellido"
