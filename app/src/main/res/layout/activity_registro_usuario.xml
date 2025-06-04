@@ -34,8 +34,8 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/nombre"
-                android:layout_marginBottom="4dp"/>
+                android:layout_marginBottom="4dp"
+                android:text="@string/nombre" />
 
             <EditText
                 android:id="@+id/etNombre"
@@ -47,7 +47,7 @@
 
             <TextView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="19dp"
                 android:layout_marginBottom="4dp"
                 android:importantForAutofill="no"
                 android:inputType="textPersonName"

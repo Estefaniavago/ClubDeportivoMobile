@@ -121,7 +121,7 @@
         android:layout_marginEnd="199dp"
         android:layout_marginBottom="102dp"
         android:backgroundTint="#1F3983"
-        android:text="INGRESO USUARIO"
+        android:text="INGRESO SOCIO"
         android:textColor="#F2EEEE"
         app:cornerRadius="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
