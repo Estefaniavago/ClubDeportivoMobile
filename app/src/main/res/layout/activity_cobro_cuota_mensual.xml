@@ -74,9 +74,54 @@
                     android:minHeight="48dp"
                     android:backgroundTint="#58A2ED"/>
 
+                <!-- Sección de pago (inicialmente oculta) -->
+                <LinearLayout
+                    android:id="@+id/layoutPago"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginTop="16dp"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Monto a pagar:"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:layout_marginBottom="8dp"/>
+
+                    <TextView
+                        android:id="@+id/tvMonto"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="$45,000"
+                        android:textSize="24sp"
+                        android:textStyle="bold"
+                        android:textColor="#4CAF50"
+                        android:layout_marginBottom="16dp"/>
+
+                    <Button
+                        android:id="@+id/btnPagar"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="PAGAR"
+                        android:minHeight="48dp"
+                        android:backgroundTint="#4CAF50"/>
+
+                </LinearLayout>
+
             </LinearLayout>
 
         </androidx.cardview.widget.CardView>
+
+        <Button
+            android:id="@+id/button7"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="VOLVER"
+            android:layout_margin="16dp"
+            android:backgroundTint="#58A2ED"/>
 
     </LinearLayout>
 

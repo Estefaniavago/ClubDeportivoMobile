@@ -27,35 +27,6 @@
             android:gravity="center"
             android:layout_marginBottom="24dp"/>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginBottom="16dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Fecha"
-                android:layout_marginEnd="8dp"/>
-
-            <EditText
-                android:id="@+id/etFecha"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:enabled="false"
-                android:minHeight="48dp"
-                android:text="02/05/2025" />
-
-            <Button
-                android:id="@+id/btnBorrar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="BORRAR"
-                android:backgroundTint="#015f8f"/>
-        </LinearLayout>
-
         <TableLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -66,20 +37,24 @@
                 android:padding="8dp">
 
                 <TextView
-                    android:text="ID Pago"
-                    android:textStyle="bold"/>
+                    android:text="DNI"
+                    android:textStyle="bold"
+                    android:layout_weight="2"/>
 
                 <TextView
-                    android:text="DNI"
-                    android:textStyle="bold"/>
+                    android:text="Nombre y Apellido"
+                    android:textStyle="bold"
+                    android:layout_weight="3"/>
 
                 <TextView
                     android:text="Fecha de\nVencimiento"
-                    android:textStyle="bold"/>
+                    android:textStyle="bold"
+                    android:layout_weight="2"/>
 
                 <TextView
-                    android:text="Estado de\nVencimiento"
-                    android:textStyle="bold"/>
+                    android:text="Estado"
+                    android:textStyle="bold"
+                    android:layout_weight="2"/>
             </TableRow>
 
         </TableLayout>
@@ -91,10 +66,10 @@
             android:layout_weight="1"/>
 
         <Button
-            android:id="@+id/btnCargarMas"
+            android:id="@+id/button7"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="CARGAR MÁS"
+            android:text="VOLVER"
             android:backgroundTint="#015f8f"
             android:layout_marginTop="16dp"/>
 

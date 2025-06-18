@@ -2,64 +2,128 @@ package com.example.clubdeportivo
 
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.clubdeportivo.models.Vencimiento
+import com.example.pruebaclubdeportivo.UserDBHelper
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 class ListarVencimientoActivity : AppCompatActivity() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: VencimientosAdapter
+    private lateinit var dbHelper: UserDBHelper
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_listar_vencimiento)
 
+        dbHelper = UserDBHelper(this)
         val btnVolver = findViewById<Button>(R.id.button7)
-        val btnBorrar = findViewById<Button>(R.id.btnBorrar)
-        val btnCargarMas = findViewById<Button>(R.id.btnCargarMas)
         recyclerView = findViewById(R.id.recyclerVencimientos)
 
-        // Datos de ejemplo
-        val vencimientos = listOf(
-            Vencimiento(1, "33520145", "1/4/25", "Vencido"),
-            Vencimiento(2, "16548852", "25/4/25", "Pagado"),
-            Vencimiento(3, "15428756", "30/5/25", "Pagado"),
-            Vencimiento(4, "32564856", "2/5/25", "Pagado"),
-            Vencimiento(5, "20365123", "3/6/25", "Pagado"),
-            Vencimiento(6, "20548632", "1/5/25", "Vencido")
-        )
+        // Cargar vencimientos desde la base de datos
+        val vencimientos = cargarVencimientos()
+        
+        if (vencimientos.isEmpty()) {
+            Toast.makeText(this, "No hay pagos registrados", Toast.LENGTH_LONG).show()
+        }
 
-        adapter = VencimientosAdapter(vencimientos.toMutableList())
+        adapter = VencimientosAdapter(vencimientos)
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = adapter
 
         btnVolver.setOnClickListener {
             finish()
         }
+    }
 
-        btnBorrar.setOnClickListener {
-            adapter.clearItems()
+    private fun cargarVencimientos(): List<Vencimiento> {
+        val vencimientos = mutableListOf<Vencimiento>()
+        val db = dbHelper.readableDatabase
+        val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+        val fechaActual = dateFormat.format(Date())
+
+        // Consulta para obtener los datos de socios y clientes
+        val query = """
+            SELECT s.id, c.dni, c.nombre, c.apellido, s.fecha_vencimiento, s.fecha_pago,
+                   CASE 
+                       WHEN s.fecha_vencimiento >= ? THEN 'Pagado'
+                       ELSE 'Vencido'
+                   END as estado
+            FROM socios s
+            INNER JOIN clientes c ON s.cliente_id = c.id
+            ORDER BY s.fecha_pago DESC
+        """.trimIndent()
+
+        Log.d("ListarVencimiento", "Fecha actual: $fechaActual")
+        Log.d("ListarVencimiento", "Ejecutando query: $query")
+
+        val cursor = db.rawQuery(query, arrayOf(fechaActual))
+
+        Log.d("ListarVencimiento", "Número de registros encontrados: ${cursor.count}")
+
+        cursor.use {
+            while (it.moveToNext()) {
+                val id = it.getInt(it.getColumnIndexOrThrow("id"))
+                val dni = it.getString(it.getColumnIndexOrThrow("dni"))
+                val nombre = it.getString(it.getColumnIndexOrThrow("nombre"))
+                val apellido = it.getString(it.getColumnIndexOrThrow("apellido"))
+                val fechaVencimiento = it.getString(it.getColumnIndexOrThrow("fecha_vencimiento"))
+                val fechaPago = it.getString(it.getColumnIndexOrThrow("fecha_pago"))
+                val estado = it.getString(it.getColumnIndexOrThrow("estado"))
+
+                Log.d("ListarVencimiento", """
+                    Registro encontrado:
+                    ID: $id
+                    DNI: $dni
+                    Nombre: $nombre
+                    Apellido: $apellido
+                    Fecha Vencimiento: $fechaVencimiento
+                    Fecha Pago: $fechaPago
+                    Estado: $estado
+                """.trimIndent())
+
+                // Formatear la fecha para mostrarla
+                val fechaDb = dateFormat.parse(fechaVencimiento)
+                val fechaMostrar = SimpleDateFormat("dd/MM/yy", Locale.getDefault()).format(fechaDb!!)
+
+                vencimientos.add(Vencimiento(id, dni, nombre, apellido, fechaMostrar, estado))
+            }
         }
 
-        btnCargarMas.setOnClickListener {
-            // Simular carga de más datos
-            adapter.addItems(vencimientos)
-        }
+        return vencimientos
+    }
+
+    override fun onResume() {
+        super.onResume()
+        // Actualizar la lista cada vez que la actividad vuelve a primer plano
+        val vencimientos = cargarVencimientos()
+        adapter = VencimientosAdapter(vencimientos)
+        recyclerView.adapter = adapter
+    }
+
+    override fun onDestroy() {
+        dbHelper.close()
+        super.onDestroy()
     }
 }
 
-class VencimientosAdapter(private val items: MutableList<Vencimiento>) : 
+class VencimientosAdapter(private val items: List<Vencimiento>) : 
     RecyclerView.Adapter<VencimientosAdapter.VencimientoViewHolder>() {
 
     class VencimientoViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val tvId: TextView = view.findViewById(R.id.tvId)
         val tvDni: TextView = view.findViewById(R.id.tvDni)
+        val tvNombreApellido: TextView = view.findViewById(R.id.tvNombreApellido)
         val tvFecha: TextView = view.findViewById(R.id.tvFecha)
         val tvEstado: TextView = view.findViewById(R.id.tvEstado)
     }
@@ -72,9 +136,9 @@ class VencimientosAdapter(private val items: MutableList<Vencimiento>) :
 
     override fun onBindViewHolder(holder: VencimientoViewHolder, position: Int) {
         val item = items[position]
-        holder.tvId.text = item.id.toString()
         holder.tvDni.text = item.dni
-        holder.tvFecha.text = item.fecha
+        holder.tvNombreApellido.text = "${item.apellido}, ${item.nombre}"
+        holder.tvFecha.text = item.fechaVencimiento
         holder.tvEstado.text = item.estado
         
         if (item.estado == "Vencido") {
@@ -85,15 +149,4 @@ class VencimientosAdapter(private val items: MutableList<Vencimiento>) :
     }
 
     override fun getItemCount() = items.size
-
-    fun clearItems() {
-        items.clear()
-        notifyDataSetChanged()
-    }
-
-    fun addItems(newItems: List<Vencimiento>) {
-        val startPos = items.size
-        items.addAll(newItems)
-        notifyItemRangeInserted(startPos, newItems.size)
-    }
 } 
