@@ -1,74 +1,83 @@
 package com.example.clubdeportivo
 
-import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
-import com.example.clubdeportivo.models.Vencimiento
+import com.example.pruebaclubdeportivo.UserDBHelper
+
+data class Cliente(
+    val nombre: String,
+    val apellido: String,
+    val dni: String
+)
 
 class RegistrosActivity : AppCompatActivity() {
-    private lateinit var adapter: VencimientosListAdapter
-    private val vencimientos = mutableListOf(
-        Vencimiento(1, "33520145", "1/4/25", "Vencido"),
-        Vencimiento(2, "16548852", "25/4/25", "Pagado"),
-        Vencimiento(3, "15428756", "30/5/25", "Pagado"),
-        Vencimiento(4, "32564856", "2/5/25", "Pagado"),
-        Vencimiento(5, "20365123", "3/6/25", "Pagado"),
-        Vencimiento(6, "20548632", "1/5/25", "Vencido")
-    )
+    private lateinit var adapter: ClientesListAdapter
+    private lateinit var dbHelper: UserDBHelper
+    private val clientes = mutableListOf<Cliente>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_registros)
 
+        dbHelper = UserDBHelper(this)
         val listViewRegistros = findViewById<ListView>(R.id.listViewRegistros)
         val btnVolver = findViewById<Button>(R.id.button7)
-        val btnBorrar = findViewById<Button>(R.id.btnBorrar)
-        val btnCargarMas = findViewById<Button>(R.id.btnCargarMas)
 
-        adapter = VencimientosListAdapter(this, vencimientos)
+        cargarClientes()
+        adapter = ClientesListAdapter(this, clientes)
         listViewRegistros.adapter = adapter
-
-        btnBorrar.setOnClickListener {
-            vencimientos.clear()
-            adapter.notifyDataSetChanged()
-            Toast.makeText(this, "Registros borrados", Toast.LENGTH_SHORT).show()
-        }
-
-        btnCargarMas.setOnClickListener {
-            // Simulamos cargar más registros
-            vencimientos.addAll(vencimientos.take(3))
-            adapter.notifyDataSetChanged()
-            Toast.makeText(this, "Registros cargados", Toast.LENGTH_SHORT).show()
-        }
 
         btnVolver.setOnClickListener {
             finish()
         }
     }
+
+    private fun cargarClientes() {
+        val db = dbHelper.readableDatabase
+        val cursor = db.query(
+            "clientes",
+            arrayOf("nombre", "apellido", "dni"),
+            null,
+            null,
+            null,
+            null,
+            "apellido ASC, nombre ASC"
+        )
+
+        with(cursor) {
+            while (moveToNext()) {
+                val nombre = getString(getColumnIndexOrThrow("nombre"))
+                val apellido = getString(getColumnIndexOrThrow("apellido"))
+                val dni = getString(getColumnIndexOrThrow("dni"))
+                clientes.add(Cliente(nombre, apellido, dni))
+            }
+        }
+        cursor.close()
+    }
+
+    override fun onDestroy() {
+        dbHelper.close()
+        super.onDestroy()
+    }
 }
 
-class VencimientosListAdapter(
+class ClientesListAdapter(
     private val context: AppCompatActivity,
-    private val items: MutableList<Vencimiento>
-) : ArrayAdapter<Vencimiento>(context, R.layout.item_vencimiento, items) {
+    private val items: List<Cliente>
+) : ArrayAdapter<Cliente>(context, R.layout.item_socio, items) {
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         val view = convertView ?: LayoutInflater.from(context)
-            .inflate(R.layout.item_vencimiento, parent, false)
+            .inflate(R.layout.item_socio, parent, false)
 
         val item = items[position]
         
-        view.findViewById<TextView>(R.id.tvId).text = item.id.toString()
+        view.findViewById<TextView>(R.id.tvNombreApellido).text = "${item.apellido}, ${item.nombre}"
         view.findViewById<TextView>(R.id.tvDni).text = item.dni
-        view.findViewById<TextView>(R.id.tvFecha).text = item.fecha
-        
-        val tvEstado = view.findViewById<TextView>(R.id.tvEstado)
-        tvEstado.text = item.estado
-        tvEstado.setTextColor(if (item.estado == "Vencido") Color.RED else Color.GREEN)
 
         return view
     }

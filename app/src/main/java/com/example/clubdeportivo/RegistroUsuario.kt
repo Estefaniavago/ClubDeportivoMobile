@@ -1,21 +1,21 @@
 package com.example.clubdeportivo
 
 import android.os.Bundle
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-
 import android.widget.Button
 import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.Toast
-
+import com.example.pruebaclubdeportivo.UserDBHelper
 
 class RegistroUsuario : AppCompatActivity() {
+    private lateinit var dbHelper: UserDBHelper
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_registro_usuario)
+
+        dbHelper = UserDBHelper(this)
 
         val etNombre = findViewById<EditText>(R.id.etNombre)
         val etApellido = findViewById<EditText>(R.id.etApellido)
@@ -25,14 +25,18 @@ class RegistroUsuario : AppCompatActivity() {
         val btnLimpiar = findViewById<Button>(R.id.btnLimpiar)
 
         btnRegistrar.setOnClickListener {
-            val nombre = etNombre.text.toString()
-            val apellido = etApellido.text.toString()
-            val documento = etNumeroDocumento.text.toString()
+            val nombre = etNombre.text.toString().trim()
+            val apellido = etApellido.text.toString().trim()
+            val documento = etNumeroDocumento.text.toString().trim()
             val aptoFisico = cbAptoFisico.isChecked
 
             if (nombre.isNotEmpty() && apellido.isNotEmpty() && documento.isNotEmpty()) {
-                // Aquí iría la lógica para registrar el cliente
-                Toast.makeText(this, "Cliente registrado", Toast.LENGTH_SHORT).show()
+                if (dbHelper.insertarCliente(nombre, apellido, documento, aptoFisico)) {
+                    Toast.makeText(this, "Cliente registrado exitosamente", Toast.LENGTH_SHORT).show()
+                    finish() // Volver a la pantalla anterior
+                } else {
+                    Toast.makeText(this, "Error al registrar el cliente. El DNI podría estar duplicado.", Toast.LENGTH_SHORT).show()
+                }
             } else {
                 Toast.makeText(this, "Complete todos los campos", Toast.LENGTH_SHORT).show()
             }
@@ -44,5 +48,10 @@ class RegistroUsuario : AppCompatActivity() {
             etNumeroDocumento.text.clear()
             cbAptoFisico.isChecked = false
         }
+    }
+
+    override fun onDestroy() {
+        dbHelper.close()
+        super.onDestroy()
     }
 }
