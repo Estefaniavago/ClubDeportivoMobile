@@ -11,7 +11,7 @@ import java.util.Calendar
 import java.util.Date
 import java.util.Locale
 
-class UserDBHelper(context: Context) : SQLiteOpenHelper(context, "ClubDB", null, 5) {
+class UserDBHelper(context: Context) : SQLiteOpenHelper(context, "ClubDB", null, 6) {
 
     companion object {
         private const val TAG = "UserDBHelper"
@@ -53,9 +53,37 @@ class UserDBHelper(context: Context) : SQLiteOpenHelper(context, "ClubDB", null,
                 FOREIGN KEY(cliente_id) REFERENCES clientes(id)
             )
         """.trimIndent())
+
+        // Tabla pagos de actividad diaria
+        db.execSQL("""
+            CREATE TABLE pagos_actividad_diaria (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                cliente_id INTEGER,
+                actividad TEXT,
+                monto INTEGER,
+                horario TEXT,
+                medio_pago TEXT,
+                fecha TEXT,
+                FOREIGN KEY(cliente_id) REFERENCES clientes(id)
+            )
+        """.trimIndent())
     }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
+        if (oldVersion < 6) {
+            db.execSQL("""
+                CREATE TABLE IF NOT EXISTS pagos_actividad_diaria (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    cliente_id INTEGER,
+                    actividad TEXT,
+                    monto INTEGER,
+                    horario TEXT,
+                    medio_pago TEXT,
+                    fecha TEXT,
+                    FOREIGN KEY(cliente_id) REFERENCES clientes(id)
+                )
+            """.trimIndent())
+        }
         if (oldVersion < 5) {
             // Crear la nueva tabla socios
             db.execSQL("""
@@ -230,5 +258,21 @@ class UserDBHelper(context: Context) : SQLiteOpenHelper(context, "ClubDB", null,
             null,
             "fecha_pago DESC"
         )
+    }
+
+    fun registrarPagoActividadDiaria(clienteId: Long, actividad: String, monto: Int, horario: String, medioPago: String): Boolean {
+        val db = writableDatabase
+        val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+        val fecha = dateFormat.format(Date())
+        val valores = ContentValues().apply {
+            put("cliente_id", clienteId)
+            put("actividad", actividad)
+            put("monto", monto)
+            put("horario", horario)
+            put("medio_pago", medioPago)
+            put("fecha", fecha)
+        }
+        val resultado = db.insert("pagos_actividad_diaria", null, valores)
+        return resultado != -1L
     }
 }

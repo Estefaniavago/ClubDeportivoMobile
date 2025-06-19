@@ -18,6 +18,7 @@
         android:scrollbars="vertical">
 
         <LinearLayout
+            android:id="@+id/layoutFormulario"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -157,26 +158,116 @@
                     android:minHeight="48dp"
                     android:text="@string/credito"/>
 
-                <Spinner
-                    android:id="@+id/spinnerCredito"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:minHeight="48dp"
-                    android:contentDescription="@string/seleccionar_tarjeta"
-                    android:layout_marginStart="32dp"
-                    android:layout_marginTop="8dp"
-                    android:visibility="gone"/>
             </RadioGroup>
 
-            <Button
+            <!-- Elimino el botón azul btnPagar -->
+            <!-- <Button
                 android:id="@+id/btnPagar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/pagar"
                 android:backgroundTint="#015f8f"
                 android:layout_marginTop="16dp"
-                android:layout_marginBottom="16dp"/>
+                android:layout_marginBottom="16dp"/> -->
+
+            <Button
+                android:id="@+id/btnPagarFinal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="PAGAR"
+                android:layout_marginTop="24dp"
+                android:backgroundTint="#4CAF50"
+                android:enabled="false"/>
 
         </LinearLayout>
     </ScrollView>
+
+    <!-- Comprobante de pago (hermano directo del formulario, fuera del ScrollView) -->
+    <LinearLayout
+        android:id="@+id/layoutComprobante"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="24dp"
+        android:background="#E3F2FD"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/tvComprobanteTitulo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Comprobante de Pago"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:layout_marginBottom="16dp"/>
+
+        <TextView
+            android:id="@+id/tvComprobanteNombre"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Nombre y Apellido: "
+            android:textSize="18sp"
+            android:layout_marginBottom="8dp"/>
+        <TextView
+            android:id="@+id/tvComprobanteDni"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="DNI: "
+            android:textSize="18sp"
+            android:layout_marginBottom="8dp"/>
+        <TextView
+            android:id="@+id/tvComprobanteActividad"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Actividad: "
+            android:textSize="18sp"
+            android:layout_marginBottom="8dp"/>
+        <TextView
+            android:id="@+id/tvComprobanteMonto"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Monto: "
+            android:textSize="18sp"
+            android:layout_marginBottom="8dp"/>
+        <TextView
+            android:id="@+id/tvComprobanteMedioPago"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Medio de Pago: "
+            android:textSize="18sp"
+            android:layout_marginBottom="8dp"/>
+        <TextView
+            android:id="@+id/tvComprobanteFecha"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Fecha: "
+            android:textSize="18sp"
+            android:layout_marginBottom="16dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center">
+
+            <Button
+                android:id="@+id/btnAceptarComprobante"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Aceptar"
+                android:backgroundTint="#4CAF50"
+                android:layout_marginEnd="8dp"/>
+
+            <Button
+                android:id="@+id/btnImprimirComprobante"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Imprimir"
+                android:backgroundTint="#015f8f"/>
+        </LinearLayout>
+    </LinearLayout>
+
 </LinearLayout> 
