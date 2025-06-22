@@ -1,4 +1,4 @@
-package com.example.pruebaclubdeportivo
+package com.example.clubdeportivo
 
 import android.content.ContentValues
 import android.content.Context
@@ -6,12 +6,14 @@ import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.util.Log
+import com.example.clubdeportivo.models.Actividad
+import com.example.clubdeportivo.models.Cliente
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
 import java.util.Locale
 
-class UserDBHelper(context: Context) : SQLiteOpenHelper(context, "ClubDB", null, 6) {
+class UserDBHelper(context: Context) : SQLiteOpenHelper(context, "ClubDB", null, 7) {
 
     companion object {
         private const val TAG = "UserDBHelper"
@@ -54,6 +56,8 @@ class UserDBHelper(context: Context) : SQLiteOpenHelper(context, "ClubDB", null,
             )
         """.trimIndent())
 
+
+
         // Tabla pagos de actividad diaria
         db.execSQL("""
             CREATE TABLE pagos_actividad_diaria (
@@ -67,9 +71,36 @@ class UserDBHelper(context: Context) : SQLiteOpenHelper(context, "ClubDB", null,
                 FOREIGN KEY(cliente_id) REFERENCES clientes(id)
             )
         """.trimIndent())
+
+        db.execSQL("""
+            CREATE TABLE actividades (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                nombre TEXT UNIQUE NOT NULL,
+                precio REAL NOT NULL,
+                horarios TEXT
+            )
+        """.trimIndent())
+
+        // Dentro de la función onCreate en UserDBHelper.kt
+        db.execSQL("INSERT INTO actividades (nombre, precio, horarios) VALUES ('Gimnasio', 2000.0, 'Lunes 9-10,Miércoles 9-10,Viernes 9-10')")
+        db.execSQL("INSERT INTO actividades (nombre, precio, horarios) VALUES ('Natación', 2500.0, 'Martes 18-19,Jueves 18-19')")
+        db.execSQL("INSERT INTO actividades (nombre, precio, horarios) VALUES ('Fútbol', 1800.0, 'Lunes 20-21,Miércoles 20-21')")
+        db.execSQL("INSERT INTO actividades (nombre, precio, horarios) VALUES ('Básquet', 1800.0, 'Martes 21-22,Jueves 21-22')")
+        db.execSQL("INSERT INTO actividades (nombre, precio, horarios) VALUES ('Tenis', 2200.0, 'Sábados 10-11,Sábados 11-12')")
     }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
+        if (oldVersion < 7) {
+            db.execSQL("""
+        CREATE TABLE IF NOT EXISTS actividades (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            nombre TEXT UNIQUE NOT NULL,
+            precio REAL NOT NULL,
+            horarios TEXT
+        )
+    """.trimIndent())
+
+        }
         if (oldVersion < 6) {
             db.execSQL("""
                 CREATE TABLE IF NOT EXISTS pagos_actividad_diaria (
@@ -274,5 +305,78 @@ class UserDBHelper(context: Context) : SQLiteOpenHelper(context, "ClubDB", null,
         }
         val resultado = db.insert("pagos_actividad_diaria", null, valores)
         return resultado != -1L
+    }
+
+    fun obtenerTodasLasActividades(): List<Actividad> {
+        val listaActividades = mutableListOf<Actividad>()
+        val db = readableDatabase
+        val cursor = db.rawQuery("SELECT * FROM actividades ORDER BY nombre ASC", null)
+
+        if (cursor.moveToFirst()) {
+            do {
+                val actividad = Actividad(
+                    id = cursor.getLong(cursor.getColumnIndexOrThrow("id")),
+                    nombre = cursor.getString(cursor.getColumnIndexOrThrow("nombre")),
+                    precio = cursor.getDouble(cursor.getColumnIndexOrThrow("precio")),
+                    horarios = cursor.getString(cursor.getColumnIndexOrThrow("horarios"))
+                )
+                listaActividades.add(actividad)
+            } while (cursor.moveToNext())
+        }
+        cursor.close()
+        return listaActividades
+    }
+
+    // Devuelve un objeto Cliente con todos sus datos a partir del DNI
+    fun obtenerClienteCompletoPorDni(dni: String): Cliente? {
+        val db = readableDatabase
+        val cursor = db.query(
+            "clientes",
+            arrayOf("id", "nombre", "apellido", "dni"),
+            "dni = ?",
+            arrayOf(dni),
+            null,
+            null,
+            null
+        )
+
+        return if (cursor.moveToFirst()) {
+            val cliente = Cliente(
+                id = cursor.getLong(cursor.getColumnIndexOrThrow("id")),
+                nombre = cursor.getString(cursor.getColumnIndexOrThrow("nombre")),
+                apellido = cursor.getString(cursor.getColumnIndexOrThrow("apellido")),
+                dni = cursor.getString(cursor.getColumnIndexOrThrow("dni"))
+            )
+            cursor.close()
+            cliente
+        } else {
+            cursor.close()
+            null
+        }
+    }
+
+    // Devuelve el último estado y la fecha de vencimiento de un socio
+    fun obtenerUltimoEstadoSocio(clienteId: Long): Pair<String, String>? {
+        val db = readableDatabase
+        val cursor = db.query(
+            "socios",
+            arrayOf("estado", "fecha_vencimiento"),
+            "cliente_id = ?",
+            arrayOf(clienteId.toString()),
+            null,
+            null,
+            "id DESC", // Ordenamos por el último registro de pago
+            "1"
+        )
+
+        return if (cursor.moveToFirst()) {
+            val estado = cursor.getString(cursor.getColumnIndexOrThrow("estado"))
+            val vencimiento = cursor.getString(cursor.getColumnIndexOrThrow("fecha_vencimiento"))
+            cursor.close()
+            Pair(estado, vencimiento)
+        } else {
+            cursor.close()
+            null
+        }
     }
 }

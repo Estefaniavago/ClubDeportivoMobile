@@ -1,5 +1,6 @@
 package com.example.clubdeportivo
 
+import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
@@ -13,7 +14,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.clubdeportivo.models.Vencimiento
-import com.example.pruebaclubdeportivo.UserDBHelper
+import com.example.clubdeportivo.UserDBHelper
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -45,6 +46,8 @@ class ListarVencimientoActivity : AppCompatActivity() {
         btnVolver.setOnClickListener {
             finish()
         }
+
+        mostrarNombreUsuarioEnEncabezado()
     }
 
     private fun cargarVencimientos(): List<Vencimiento> {
@@ -115,6 +118,13 @@ class ListarVencimientoActivity : AppCompatActivity() {
     override fun onDestroy() {
         dbHelper.close()
         super.onDestroy()
+    }
+
+    private fun mostrarNombreUsuarioEnEncabezado() {
+        val sharedPrefs = getSharedPreferences("ClubDeportivoPrefs", Context.MODE_PRIVATE)
+        val nombreUsuario = sharedPrefs.getString("NOMBRE_USUARIO_LOGUEADO", "Usuario")
+        val tvUsuario = findViewById<TextView>(R.id.textView4)
+        tvUsuario?.text = nombreUsuario
     }
 }
 

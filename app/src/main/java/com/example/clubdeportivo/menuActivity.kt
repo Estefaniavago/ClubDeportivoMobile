@@ -1,8 +1,10 @@
 package com.example.clubdeportivo
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
+import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -61,5 +63,13 @@ class MenuActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+
+        mostrarNombreUsuarioEnEncabezado()
+    }
+    private fun mostrarNombreUsuarioEnEncabezado() {
+        val sharedPrefs = getSharedPreferences("ClubDeportivoPrefs", Context.MODE_PRIVATE)
+        val nombreUsuario = sharedPrefs.getString("NOMBRE_USUARIO_LOGUEADO", "Usuario")
+        val tvUsuario = findViewById<TextView>(R.id.textView4)
+        tvUsuario?.text = nombreUsuario
     }
 }

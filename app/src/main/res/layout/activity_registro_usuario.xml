@@ -78,7 +78,8 @@
                 android:hint="12.346.899"
                 android:inputType="number"
                 android:minHeight="48dp"
-                tools:ignore="HardcodedText" />
+                android:maxLength="8"
+                tools:ignore="HardcodedText, Autofill" />
 
             <CheckBox
                 android:id="@+id/cbAptoFisico"

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -26,31 +27,6 @@
                 android:layout_marginTop="16dp"
                 android:textStyle="bold"/>
 
-            <!-- Fecha y botón borrar -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:padding="16dp">
-
-                <EditText
-                    android:id="@+id/etFecha"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="02/05/2025"
-                    android:enabled="false"
-                    android:background="@drawable/fondo_recuadro"
-                    android:padding="8dp"/>
-
-                <Button
-                    android:id="@+id/btnBorrar"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="BORRAR"
-                    android:backgroundTint="#58A2ED"
-                    android:layout_marginStart="16dp"/>
-            </LinearLayout>
 
             <!-- Tabla de clientes -->
             <LinearLayout
@@ -83,10 +59,12 @@
                         android:textStyle="bold"/>
                 </LinearLayout>
 
-                <ListView
-                    android:id="@+id/listViewRegistros"
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerViewRegistros"
                     android:layout_width="match_parent"
-                    android:layout_height="400dp"/>
+                    android:layout_height="400dp"
+                    tools:listitem="@layout/item_socio" />
+
             </LinearLayout>
 
             <Button

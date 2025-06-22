@@ -6,7 +6,7 @@ import android.widget.Button
 import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.Toast
-import com.example.pruebaclubdeportivo.UserDBHelper
+import com.example.clubdeportivo.UserDBHelper
 
 class RegistroUsuario : AppCompatActivity() {
     private lateinit var dbHelper: UserDBHelper
@@ -30,7 +30,7 @@ class RegistroUsuario : AppCompatActivity() {
             val documento = etNumeroDocumento.text.toString().trim()
             val aptoFisico = cbAptoFisico.isChecked
 
-            if (nombre.isNotEmpty() && apellido.isNotEmpty() && documento.isNotEmpty()) {
+            if (nombre.isNotBlank() && apellido.isNotBlank() && documento.isNotBlank()) {
                 if (dbHelper.insertarCliente(nombre, apellido, documento, aptoFisico)) {
                     Toast.makeText(this, "Cliente registrado exitosamente", Toast.LENGTH_SHORT).show()
                     finish() // Volver a la pantalla anterior

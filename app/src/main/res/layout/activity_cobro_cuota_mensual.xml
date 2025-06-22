@@ -84,6 +84,25 @@
                     android:visibility="gone">
 
                     <TextView
+                        android:id="@+id/tvNombreClientePago"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Nombre: Juan Pérez"
+                        android:textAlignment="center"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:layout_marginBottom="4dp"/>
+
+                    <TextView
+                        android:id="@+id/tvEstadoClientePago"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Estado: Cuota Vencida"
+                        android:textAlignment="center"
+                        android:textSize="16sp"
+                        android:layout_marginBottom="16dp"/>
+
+                    <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Monto a pagar:"

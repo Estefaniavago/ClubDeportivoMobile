@@ -1,17 +1,22 @@
 package com.example.clubdeportivo
 
+import android.content.Context
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.LinearLayout
+import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
-import com.example.pruebaclubdeportivo.UserDBHelper
+import com.example.clubdeportivo.models.Cliente
+
 
 class CobroCuotaMensualActivity : AppCompatActivity() {
+
     private lateinit var dbHelper: UserDBHelper
-    private var clienteId: Long = -1
+    // En lugar de guardar solo el ID, guardamos el objeto Cliente completo
+    private var clienteEncontrado: Cliente? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -19,72 +24,85 @@ class CobroCuotaMensualActivity : AppCompatActivity() {
 
         dbHelper = UserDBHelper(this)
 
+        // Referencias a la UI
         val etDocumento = findViewById<EditText>(R.id.etDocumentoCuota)
         val btnValidar = findViewById<Button>(R.id.btnValidar)
+        val layoutPago = findViewById<LinearLayout>(R.id.layoutPago)
         val btnPagar = findViewById<Button>(R.id.btnPagar)
         val btnVolver = findViewById<Button>(R.id.button7)
-        val layoutPago = findViewById<LinearLayout>(R.id.layoutPago)
 
+        // Listener para el botón de búsqueda (Validar)
         btnValidar.setOnClickListener {
-            if (etDocumento.text.isNotEmpty()) {
-                val dni = etDocumento.text.toString()
-                validarDNI(dni, layoutPago)
+            val dni = etDocumento.text.toString().trim()
+            if (dni.isNotBlank()) {
+                // Buscamos al cliente completo en la BD
+                clienteEncontrado = dbHelper.obtenerClienteCompletoPorDni(dni)
+
+                if (clienteEncontrado != null) {
+                    // Si lo encontramos, mostramos el panel de información
+                    layoutPago.visibility = View.VISIBLE
+                    // Y actualizamos la UI con sus datos
+                    actualizarInfoSocioUI()
+                } else {
+                    // Si no, ocultamos el panel y mostramos un error
+                    layoutPago.visibility = View.GONE
+                    Toast.makeText(this, "Cliente con DNI $dni no encontrado", Toast.LENGTH_SHORT).show()
+                }
             } else {
-                Toast.makeText(this, "Por favor ingrese un número de documento", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Por favor, ingrese un DNI", Toast.LENGTH_SHORT).show()
             }
         }
 
+        // Listener para el botón de registrar pago
         btnPagar.setOnClickListener {
-            if (clienteId != -1L) {
-                realizarPago()
+            clienteEncontrado?.let { cliente ->
+                if (dbHelper.registrarPagoSocio(cliente.id)) {
+                    Toast.makeText(this, "Pago registrado con éxito para ${cliente.nombre}", Toast.LENGTH_LONG).show()
+                    // MUY IMPORTANTE: Refrescamos la UI para mostrar el nuevo estado "Activo"
+                    actualizarInfoSocioUI()
+                } else {
+                    Toast.makeText(this, "Error al registrar el pago", Toast.LENGTH_SHORT).show()
+                }
             }
         }
 
         btnVolver.setOnClickListener {
             finish()
         }
+
+        mostrarNombreUsuarioEnEncabezado()
     }
 
-    private fun validarDNI(dni: String, layoutPago: LinearLayout) {
-        // Obtener el ID del cliente por DNI
-        val posibleClienteId = dbHelper.obtenerClientePorDni(dni)
+    /**
+     * Esta función se encarga de toda la lógica de actualizar la interfaz
+     * con la información del cliente encontrado.
+     */
+    private fun actualizarInfoSocioUI() {
+        // Referencias a los componentes dentro del panel de pago
+        val tvNombreCliente = findViewById<TextView>(R.id.tvNombreClientePago)
+        val tvEstadoCliente = findViewById<TextView>(R.id.tvEstadoClientePago)
+        val btnPagar = findViewById<Button>(R.id.btnPagar)
 
-        if (posibleClienteId == null) {
-            // El DNI no corresponde a un cliente registrado
-            Toast.makeText(this, 
-                "El DNI no corresponde a un cliente registrado en el sistema", 
-                Toast.LENGTH_LONG).show()
-            layoutPago.visibility = View.GONE
-            clienteId = -1L
-            return
-        }
+        // Nos aseguramos de que haya un cliente encontrado
+        clienteEncontrado?.let { cliente ->
+            // Mostramos el nombre del cliente
+            tvNombreCliente.text = "Cliente: ${cliente.nombre} ${cliente.apellido}"
 
-        // Verificar si es socio activo
-        if (dbHelper.esSocioActivo(posibleClienteId)) {
-            Toast.makeText(this, 
-                "El cliente ya es socio activo con cuota al día", 
-                Toast.LENGTH_LONG).show()
-            layoutPago.visibility = View.GONE
-            clienteId = -1L
-            return
-        }
+            // Verificamos el último estado del socio para dar info detallada
+            val ultimoEstado = dbHelper.obtenerUltimoEstadoSocio(cliente.id)
 
-        // Si llegamos aquí, el cliente existe y no es socio activo o tiene la cuota vencida
-        clienteId = posibleClienteId
-        layoutPago.visibility = View.VISIBLE
-        Toast.makeText(this, "DNI validado correctamente", Toast.LENGTH_SHORT).show()
-    }
+            if (ultimoEstado == null) {
+                // Si es null, es porque nunca ha pagado, por lo tanto no es socio.
+                tvEstadoCliente.text = "Estado: No es socio"
+                btnPagar.isEnabled = true // Puede pagar
+            } else {
+                // Si tiene un estado, puede ser "Activo" o "Vencido"
+                val (estado, vencimiento) = ultimoEstado
+                tvEstadoCliente.text = "Estado: $estado (Vence: $vencimiento)"
 
-    private fun realizarPago() {
-        if (dbHelper.registrarPagoSocio(clienteId)) {
-            Toast.makeText(this, 
-                "Pago registrado correctamente. ¡Bienvenido al club!", 
-                Toast.LENGTH_LONG).show()
-            finish()
-        } else {
-            Toast.makeText(this, 
-                "Error al registrar el pago. Por favor, intente nuevamente", 
-                Toast.LENGTH_LONG).show()
+                // El botón de pago solo se habilita si su estado NO es "Activo"
+                btnPagar.isEnabled = (estado != "Activo")
+            }
         }
     }
 
@@ -92,4 +110,11 @@ class CobroCuotaMensualActivity : AppCompatActivity() {
         dbHelper.close()
         super.onDestroy()
     }
-} 
+
+    private fun mostrarNombreUsuarioEnEncabezado() {
+        val sharedPrefs = getSharedPreferences("ClubDeportivoPrefs", Context.MODE_PRIVATE)
+        val nombreUsuario = sharedPrefs.getString("NOMBRE_USUARIO_LOGUEADO", "Usuario")
+        val tvUsuario = findViewById<TextView>(R.id.textView4)
+        tvUsuario?.text = nombreUsuario
+    }
+}
