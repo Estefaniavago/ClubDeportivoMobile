@@ -10,6 +10,10 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import com.example.clubdeportivo.models.Cliente
+import android.widget.RadioButton
+import android.widget.RadioGroup
+import android.widget.Spinner
+import android.widget.ArrayAdapter
 
 
 class CobroCuotaMensualActivity : AppCompatActivity() {
@@ -30,6 +34,61 @@ class CobroCuotaMensualActivity : AppCompatActivity() {
         val layoutPago = findViewById<LinearLayout>(R.id.layoutPago)
         val btnPagar = findViewById<Button>(R.id.btnPagar)
         val btnVolver = findViewById<Button>(R.id.button7)
+        val radioGroupPago = findViewById<RadioGroup>(R.id.radioGroupPagoCuota)
+        val radioEfectivo = findViewById<RadioButton>(R.id.radioEfectivoCuota)
+        val radioCredito = findViewById<RadioButton>(R.id.radioCreditoCuota)
+        val layoutCuotas = findViewById<LinearLayout>(R.id.layoutCuotas)
+        val spinnerCuotas = findViewById<Spinner>(R.id.spinnerCuotas)
+        val layoutMedioPago = findViewById<LinearLayout>(R.id.layoutMedioPago)
+        val layoutMonto = findViewById<LinearLayout>(R.id.layoutMonto)
+        layoutMonto.visibility = View.GONE
+
+        // Configurar Spinner de cuotas
+        val cuotasOptions = listOf("1 cuota", "3 cuotas", "6 cuotas")
+        val cuotasAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, cuotasOptions)
+        cuotasAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        spinnerCuotas.adapter = cuotasAdapter
+
+        // Estado de selección
+        var medioPagoSeleccionado: String? = null
+        var cuotasSeleccionadas: String? = null
+
+        // Listener para el RadioGroup
+        radioGroupPago.setOnCheckedChangeListener { _, checkedId ->
+            when (checkedId) {
+                R.id.radioEfectivoCuota -> {
+                    medioPagoSeleccionado = "Efectivo"
+                    layoutCuotas.visibility = View.GONE
+                    cuotasSeleccionadas = null
+                    btnPagar.isEnabled = true
+                }
+                R.id.radioCreditoCuota -> {
+                    medioPagoSeleccionado = "Tarjeta de crédito"
+                    layoutCuotas.visibility = View.VISIBLE
+                    btnPagar.isEnabled = false // Solo se habilita al elegir cuotas
+                }
+                else -> {
+                    btnPagar.isEnabled = false
+                }
+            }
+        }
+
+        // Listener para el Spinner de cuotas
+        spinnerCuotas.setOnItemSelectedListener(object : android.widget.AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: android.widget.AdapterView<*>, view: View?, position: Int, id: Long) {
+                if (radioCredito.isChecked) {
+                    cuotasSeleccionadas = cuotasOptions[position]
+                    btnPagar.isEnabled = true
+                }
+            }
+            override fun onNothingSelected(parent: android.widget.AdapterView<*>) {
+                cuotasSeleccionadas = null
+                btnPagar.isEnabled = false
+            }
+        })
+
+        // Inicialmente deshabilitar el botón de pago
+        btnPagar.isEnabled = false
 
         // Listener para el botón de búsqueda (Validar)
         btnValidar.setOnClickListener {
@@ -41,11 +100,17 @@ class CobroCuotaMensualActivity : AppCompatActivity() {
                 if (clienteEncontrado != null) {
                     // Si lo encontramos, mostramos el panel de información
                     layoutPago.visibility = View.VISIBLE
+                    layoutMedioPago.visibility = View.VISIBLE
+                    layoutMonto.visibility = View.VISIBLE
+                    btnValidar.visibility = View.GONE // Ocultar botón validar
                     // Y actualizamos la UI con sus datos
                     actualizarInfoSocioUI()
                 } else {
                     // Si no, ocultamos el panel y mostramos un error
                     layoutPago.visibility = View.GONE
+                    layoutMedioPago.visibility = View.GONE
+                    layoutMonto.visibility = View.GONE
+                    btnValidar.visibility = View.VISIBLE // Mostrar botón validar
                     Toast.makeText(this, "Cliente con DNI $dni no encontrado", Toast.LENGTH_SHORT).show()
                 }
             } else {
@@ -55,10 +120,14 @@ class CobroCuotaMensualActivity : AppCompatActivity() {
 
         // Listener para el botón de registrar pago
         btnPagar.setOnClickListener {
+            if (medioPagoSeleccionado == null || (medioPagoSeleccionado == "Tarjeta de crédito" && cuotasSeleccionadas == null)) {
+                Toast.makeText(this, "Seleccione un medio de pago y cuotas si corresponde", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
             clienteEncontrado?.let { cliente ->
+                // Aquí deberías guardar medioPagoSeleccionado y cuotasSeleccionadas si lo necesitás
                 if (dbHelper.registrarPagoSocio(cliente.id)) {
                     Toast.makeText(this, "Pago registrado con éxito para ${cliente.nombre}", Toast.LENGTH_LONG).show()
-                    // MUY IMPORTANTE: Refrescamos la UI para mostrar el nuevo estado "Activo"
                     actualizarInfoSocioUI()
                 } else {
                     Toast.makeText(this, "Error al registrar el pago", Toast.LENGTH_SHORT).show()

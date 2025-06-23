@@ -41,4 +41,5 @@
     <string name="seleccionar_tarjeta">Seleccionar tarjeta de crédito</string>
     <string name="ingresa_dni">Ingresa número de DNI</string>
     <string name="ingrese_documento">Ingrese número de documento</string>
+    <string name="monto_a_pagar">Monto a pagar:</string>
 </resources>

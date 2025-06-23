@@ -7,6 +7,7 @@ import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.Toast
 import com.example.clubdeportivo.UserDBHelper
+import android.content.Intent
 
 class RegistroUsuario : AppCompatActivity() {
     private lateinit var dbHelper: UserDBHelper
@@ -23,6 +24,7 @@ class RegistroUsuario : AppCompatActivity() {
         val cbAptoFisico = findViewById<CheckBox>(R.id.cbAptoFisico)
         val btnRegistrar = findViewById<Button>(R.id.btnRegistrar)
         val btnLimpiar = findViewById<Button>(R.id.btnLimpiar)
+        val btnVolver = findViewById<Button>(R.id.button7)
 
         btnRegistrar.setOnClickListener {
             val nombre = etNombre.text.toString().trim()
@@ -47,6 +49,13 @@ class RegistroUsuario : AppCompatActivity() {
             etApellido.text.clear()
             etNumeroDocumento.text.clear()
             cbAptoFisico.isChecked = false
+        }
+
+        btnVolver.setOnClickListener {
+            val intent = Intent(this, MenuActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
+            startActivity(intent)
+            finish()
         }
     }
 
