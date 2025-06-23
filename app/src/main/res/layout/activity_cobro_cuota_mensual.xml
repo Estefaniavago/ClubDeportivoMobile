@@ -216,6 +216,63 @@
 
         </androidx.cardview.widget.CardView>
 
+        <!-- Comprobante de pago (hermano directo del formulario, fuera del CardView) -->
+        <LinearLayout
+            android:id="@+id/layoutComprobanteCuota"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="24dp"
+            android:background="#E3F2FD"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/tvComprobanteTituloCuota"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Comprobante de Pago"
+                android:textSize="22sp"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:layout_marginBottom="16dp"/>
+
+            <TextView
+                android:id="@+id/tvComprobanteNombreCuota"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Nombre y Apellido: "
+                android:textSize="18sp"
+                android:layout_marginBottom="8dp"/>
+            <TextView
+                android:id="@+id/tvComprobanteDniCuota"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="DNI: "
+                android:textSize="18sp"
+                android:layout_marginBottom="8dp"/>
+            <TextView
+                android:id="@+id/tvComprobanteFechaCuota"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Fecha: "
+                android:textSize="18sp"
+                android:layout_marginBottom="8dp"/>
+            <TextView
+                android:id="@+id/tvComprobanteMedioPagoCuota"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Medio de Pago: "
+                android:textSize="18sp"
+                android:layout_marginBottom="16dp"/>
+
+            <Button
+                android:id="@+id/btnAceptarComprobanteCuota"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Aceptar"
+                android:backgroundTint="#4CAF50"/>
+        </LinearLayout>
+
     </LinearLayout>
 
 </ScrollView> 

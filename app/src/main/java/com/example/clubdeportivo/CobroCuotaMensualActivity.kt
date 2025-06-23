@@ -14,6 +14,8 @@ import android.widget.RadioButton
 import android.widget.RadioGroup
 import android.widget.Spinner
 import android.widget.ArrayAdapter
+import java.text.SimpleDateFormat
+import java.util.Date
 
 
 class CobroCuotaMensualActivity : AppCompatActivity() {
@@ -41,6 +43,12 @@ class CobroCuotaMensualActivity : AppCompatActivity() {
         val spinnerCuotas = findViewById<Spinner>(R.id.spinnerCuotas)
         val layoutMedioPago = findViewById<LinearLayout>(R.id.layoutMedioPago)
         val layoutMonto = findViewById<LinearLayout>(R.id.layoutMonto)
+        val layoutComprobante = findViewById<LinearLayout>(R.id.layoutComprobanteCuota)
+        val tvComprobanteNombre = findViewById<TextView>(R.id.tvComprobanteNombreCuota)
+        val tvComprobanteDni = findViewById<TextView>(R.id.tvComprobanteDniCuota)
+        val tvComprobanteFecha = findViewById<TextView>(R.id.tvComprobanteFechaCuota)
+        val tvComprobanteMedioPago = findViewById<TextView>(R.id.tvComprobanteMedioPagoCuota)
+        val btnAceptarComprobante = findViewById<Button>(R.id.btnAceptarComprobanteCuota)
         layoutMonto.visibility = View.GONE
 
         // Configurar Spinner de cuotas
@@ -125,14 +133,33 @@ class CobroCuotaMensualActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
             clienteEncontrado?.let { cliente ->
-                // Aquí deberías guardar medioPagoSeleccionado y cuotasSeleccionadas si lo necesitás
                 if (dbHelper.registrarPagoSocio(cliente.id)) {
-                    Toast.makeText(this, "Pago registrado con éxito para ${cliente.nombre}", Toast.LENGTH_LONG).show()
-                    actualizarInfoSocioUI()
+                    // Mostrar comprobante
+                    val nombreCompleto = "${cliente.nombre} ${cliente.apellido}"
+                    val dni = cliente.dni
+                    val fecha = SimpleDateFormat("dd/MM/yyyy HH:mm").format(Date())
+                    val medio = if (medioPagoSeleccionado == "Tarjeta de crédito" && cuotasSeleccionadas != null) {
+                        "${medioPagoSeleccionado} - ${cuotasSeleccionadas}"
+                    } else {
+                        medioPagoSeleccionado
+                    }
+                    tvComprobanteNombre.text = "Nombre y Apellido: $nombreCompleto"
+                    tvComprobanteDni.text = "DNI: $dni"
+                    tvComprobanteFecha.text = "Fecha: $fecha"
+                    tvComprobanteMedioPago.text = "Medio de Pago: $medio"
+                    // Ocultar formulario y mostrar comprobante
+                    layoutPago.visibility = View.GONE
+                    layoutMedioPago.visibility = View.GONE
+                    layoutMonto.visibility = View.GONE
+                    layoutComprobante.visibility = View.VISIBLE
                 } else {
                     Toast.makeText(this, "Error al registrar el pago", Toast.LENGTH_SHORT).show()
                 }
             }
+        }
+
+        btnAceptarComprobante.setOnClickListener {
+            finish()
         }
 
         btnVolver.setOnClickListener {
