@@ -40,8 +40,7 @@ class PantallaIngreso : AppCompatActivity() {
                 val editor = sharedPrefs.edit()
                 editor.putString("NOMBRE_USUARIO_LOGUEADO", usuario)
                 editor.apply() // apply() guarda los cambios
-
-
+                
 
                 // Credenciales correctas, navegar al menú
                 val intent = Intent(this, MenuActivity::class.java)
@@ -54,7 +53,10 @@ class PantallaIngreso : AppCompatActivity() {
         }
 
         btnVolver.setOnClickListener {
-            finish() // Volver a la actividad anterior
+            val intent = Intent(this, MainActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
+            startActivity(intent)
+            finish()
         }
     }
 

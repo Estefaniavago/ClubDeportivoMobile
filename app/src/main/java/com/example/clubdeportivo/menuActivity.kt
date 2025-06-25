@@ -55,7 +55,8 @@ class MenuActivity : AppCompatActivity() {
         }
 
         btnVolver.setOnClickListener {
-            finish()
+            val intent = Intent(this, PantallaIngreso::class.java)
+            startActivity(intent)
         }
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.menubotones)) { v, insets ->
