@@ -56,8 +56,6 @@ class UserDBHelper(context: Context) : SQLiteOpenHelper(context, "ClubDB", null,
             )
         """.trimIndent())
 
-
-
         // Tabla pagos de actividad diaria
         db.execSQL("""
             CREATE TABLE pagos_actividad_diaria (
@@ -87,6 +85,23 @@ class UserDBHelper(context: Context) : SQLiteOpenHelper(context, "ClubDB", null,
         db.execSQL("INSERT INTO actividades (nombre, precio, horarios) VALUES ('Fútbol', 1800.0, 'Lunes 20-21,Miércoles 20-21')")
         db.execSQL("INSERT INTO actividades (nombre, precio, horarios) VALUES ('Básquet', 1800.0, 'Martes 21-22,Jueves 21-22')")
         db.execSQL("INSERT INTO actividades (nombre, precio, horarios) VALUES ('Tenis', 2200.0, 'Sábados 10-11,Sábados 11-12')")
+
+        // Insertar socios de ejemplo
+        db.execSQL("INSERT INTO clientes (nombre, apellido, dni) VALUES ('Juan', 'Pérez', '12345678')")
+        db.execSQL("INSERT INTO clientes (nombre, apellido, dni) VALUES ('Ana', 'García', '87654321')")
+        db.execSQL("INSERT INTO clientes (nombre, apellido, dni) VALUES ('Carlos', 'Lopez', '11223344')")
+        db.execSQL("INSERT INTO clientes (nombre, apellido, dni) VALUES ('Maria', 'Fernandez', '55667788')")
+
+        // Insertar pagos o estados
+        // Suponiendo que el id 1 es Juan, 2 es Ana, 3 es Carlos, 4 es Maria
+        // Juan: pago vencido (fecha pasada)
+        db.execSQL("""INSERT INTO socios (cliente_id, fecha_pago, fecha_vencimiento, estado) VALUES (1, '2024-05-01', '2024-05-01', 'Vencido')""")
+        // Ana: pago vigente (fecha futura)
+        db.execSQL("""INSERT INTO socios (cliente_id, fecha_pago, fecha_vencimiento, estado) VALUES (2, '2024-12-01', '2024-12-01', 'Activo')""")
+        // Carlos: pago vencido (fecha pasada)
+        db.execSQL("""INSERT INTO socios (cliente_id, fecha_pago, fecha_vencimiento, estado) VALUES (3, '2024-04-15', '2024-04-15', 'Vencido')""")
+        // Maria: pago vencido (fecha pasada)
+        db.execSQL("""INSERT INTO socios (cliente_id, fecha_pago, fecha_vencimiento, estado) VALUES (4, '2024-03-20', '2024-03-20', 'Vencido')""")
     }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
